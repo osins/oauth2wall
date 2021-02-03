@@ -21,9 +21,7 @@ https://github.com/wangsying/oauth2wall/blob/5172bc88d897bb89554c6ad44998e82b2af
   )
 
   app := fiber.New()
-
-  fiberInit(app)
-
+  
   oauth2wall.NewFiberOAuth2().Init(app)
 
   app.Listen(":8087")
