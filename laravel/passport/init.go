@@ -23,7 +23,6 @@ func init() {
 		CallbackURL:  os.Getenv("LARAVEL_PASSPORT_REDIRECT_URL"),
 		ClientID:     os.Getenv("LARAVEL_PASSPORT_CLIENT_ID"),
 		ClientSecret: os.Getenv("LARAVEL_PASSPORT_CLIENT_SECRET"),
-		SessionKey:   os.Getenv("LARAVEL_PASSPORT_SESSION_KEY"),
 	}
 
 	oAuth2Config = oauth2.Config{
