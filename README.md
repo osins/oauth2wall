@@ -1,1 +1,1 @@
-# oauth2wall
+# oauth2wall 关于OAuth2的基于fiber的web框架下的登录验证库
