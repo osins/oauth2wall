@@ -5,13 +5,17 @@ import (
 	"github.com/wangsying/oauth2wall/laravel/passport"
 )
 
-type FiberOAuth interface {
-	Init(app *fiber.App)
-}
-type fiberOAuth struct {
+func NewFiberOAuth2() FiberOAuth2 {
+	return &fiberOAuth2{}
 }
 
-func (f *fiberOAuth) Init(app *fiber.App) {
+type FiberOAuth2 interface {
+	Init(app *fiber.App)
+}
+type fiberOAuth2 struct {
+}
+
+func (f *fiberOAuth2) Init(app *fiber.App) {
 	app.Get("/auth/passport/authorize", passport.Authorize)
 	app.Get("/auth/passport/callback", passport.Token)
 	app.Use(passport.Authorization)
