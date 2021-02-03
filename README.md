@@ -1,1 +1,3 @@
 # oauth2wall 关于OAuth2的基于fiber的web框架下的登录验证库
+
+该库的开发初衷是为了要对接Laravel的Passport登录验证功能，故，目前仅支持Laravel的Passport验证。
