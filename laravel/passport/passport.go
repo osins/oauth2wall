@@ -14,6 +14,9 @@ import (
 )
 
 func Authorize(ctx *fiber.Ctx) error {
+	oauthStateString := common.HmacSha256(config.SessionKey, oAuth2Config.ClientID+oAuth2Config.ClientSecret+oAuth2Config.Endpoint.AuthURL)
+	sessionManager.Put(ctx.Context(), "oauthStateString", oauthStateString)
+
 	return ctx.Redirect(oAuth2Config.AuthCodeURL(oauthStateString), http.StatusTemporaryRedirect)
 }
 
@@ -21,6 +24,7 @@ func Token(ctx *fiber.Ctx) error {
 	state := ctx.Query("state")
 	code := ctx.Query("code")
 
+	oauthStateString := sessionManager.Get(ctx.Context(), "oauthStateString")
 	if state != oauthStateString {
 		return ctx.SendString("invalid oauth state")
 	}

@@ -7,4 +7,5 @@ type Config struct {
 	CallbackURL  string
 	ClientID     string
 	ClientSecret string
+	SessionKey   string
 }
