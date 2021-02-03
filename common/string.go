@@ -22,12 +22,12 @@ func Bytes(n int) []byte {
 
 // Base64 generates a random base64 string with length of n
 func Base64(n int) string {
-	return String(n, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/")
+	return RandomString(n, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/")
 }
 
 // Base64 generates a random base62 string with length of n
 func Base62(s int) string {
-	return String(s, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	return RandomString(s, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 }
 
 // Hex generates a random hex string with length of n
@@ -40,7 +40,7 @@ var defLetters = []rune("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRS
 
 // String generates a random string using only letters provided in the letters parameter
 // if user ommit letters parameters, this function will use defLetters instead
-func String(n int, letters ...string) string {
+func RandomString(n int, letters ...string) string {
 	var letterRunes []rune
 	if len(letters) == 0 {
 		letterRunes = defLetters

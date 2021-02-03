@@ -2,9 +2,8 @@ package passport
 
 import (
 	"os"
-	"time"
 
-	"github.com/alexedwards/scs/v2"
+	"github.com/gofiber/fiber/v2/middleware/session"
 	"golang.org/x/oauth2"
 )
 
@@ -12,11 +11,10 @@ import (
 var config Config
 var oAuth2Config oauth2.Config
 var oauthStateString string
-var sessionManager *scs.SessionManager
+var sessionStore *session.Store
 
 func init() {
-	sessionManager = scs.New()
-	sessionManager.Lifetime = 24 * time.Hour
+	sessionStore = session.New()
 
 	config = Config{
 		AuthURL:      os.Getenv("LARAVEL_PASSPORT_ENDPOINT") + "/oauth/authorize",

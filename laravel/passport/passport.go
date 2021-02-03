@@ -4,6 +4,7 @@ package passport
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -13,30 +14,58 @@ import (
 	"golang.org/x/oauth2"
 )
 
-func Authorize(ctx *fiber.Ctx) error {
-	oauthStateString := common.HmacSha256(config.SessionKey, oAuth2Config.ClientID+oAuth2Config.ClientSecret+oAuth2Config.Endpoint.AuthURL)
-	sessionManager.Put(ctx.Context(), "oauthStateString", oauthStateString)
+const SESSION_STATE_KEY = "oauthStateString"
 
-	return ctx.Redirect(oAuth2Config.AuthCodeURL(oauthStateString), http.StatusTemporaryRedirect)
+func GenOAuthState(ctx *fiber.Ctx) (string, *common.Result) {
+	randomString := common.Hex(16)
+	session, err := sessionStore.Get(ctx)
+	defer session.Save()
+	if err != nil {
+		return "", common.NewResult("session 回话加载失败.").SetSuccess(false)
+	}
+	session.Set(SESSION_STATE_KEY, randomString)
+	return common.HmacSha256(randomString, oAuth2Config.ClientID+oAuth2Config.ClientSecret+oAuth2Config.Endpoint.AuthURL), nil
+}
+
+func GetOAuthState(ctx *fiber.Ctx) (string, *common.Result) {
+	session, err := sessionStore.Get(ctx)
+	defer session.Save()
+	if err != nil {
+		return "", common.NewResult("session 回话加载失败.").SetSuccess(false).SetError(err)
+	}
+	randomString := fmt.Sprintf("%v", session.Get(SESSION_STATE_KEY))
+	oauthStateString := common.HmacSha256(randomString, oAuth2Config.ClientID+oAuth2Config.ClientSecret+oAuth2Config.Endpoint.AuthURL)
+	return oauthStateString, nil
+}
+
+func Authorize(ctx *fiber.Ctx) error {
+	s, r := GenOAuthState(ctx)
+	if r != nil {
+		return r.Error
+	}
+
+	return ctx.Redirect(oAuth2Config.AuthCodeURL(s), http.StatusTemporaryRedirect)
 }
 
 func Token(ctx *fiber.Ctx) error {
 	state := ctx.Query("state")
 	code := ctx.Query("code")
 
-	oauthStateString := sessionManager.Get(ctx.Context(), "oauthStateString")
-	if state != oauthStateString {
-		return ctx.SendString("invalid oauth state")
+	if s, r := GetOAuthState(ctx); r != nil && state != s {
+		ctx.JSON(common.NewResult(fmt.Sprintf("state 验证失败")).SetSuccess(false))
+		return r.Error
 	}
+
+	sessionStore.Storage.Delete(SESSION_STATE_KEY)
 
 	token, err := oAuth2Config.Exchange(oauth2.NoContext, code)
 	if err != nil {
-		return ctx.SendString("code exchange failed: " + err.Error())
+		ctx.JSON(common.NewResult("获取用户信息失败").SetSuccess(false))
+		return err
 	}
 
-	result := GetUser(token.AccessToken)
-
-	return ctx.JSON(result)
+	ctx.JSON(GetUser(token.AccessToken))
+	return nil
 }
 
 func Authorization(ctx *fiber.Ctx) error {
