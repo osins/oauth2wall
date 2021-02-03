@@ -28,3 +28,12 @@ https://github.com/wangsying/oauth2wall/blob/5172bc88d897bb89554c6ad44998e82b2af
 
   return app
  ```
+ 
+ .env 相关配置:
+ 
+ ```
+LARAVEL_PASSPORT_CLIENT_ID=92a23f69-3c5e-459a-999c-f97761ffec0a
+LARAVEL_PASSPORT_CLIENT_SECRET=Eg9SNWpMER6gRVmHFbRfab0EEbK9Y9HsaGY4Hx2i
+LARAVEL_PASSPORT_ENDPOINT=http://localhost:8080
+LARAVEL_PASSPORT_REDIRECT_URL=http://localhost:8087/auth/passport/callback
+```
