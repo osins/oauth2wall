@@ -17,6 +17,6 @@ type fiberOAuth2 struct {
 
 func (f *fiberOAuth2) Init(app *fiber.App) {
 	app.Get("/auth/passport/authorize", passport.Authorize)
-	app.Get("/auth/passport/callback", passport.Token)
+	app.Get("/auth/passport/callback", passport.Callback)
 	app.Use(passport.Authorization)
 }
