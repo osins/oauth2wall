@@ -9,7 +9,7 @@
 ```
 
 关键入口：<br>
-https://github.com/wangsying/oauth2wall/fiber.go
+fiber.go
 
 初始化代码如下：
 
