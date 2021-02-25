@@ -1,20 +1,28 @@
-package passport
+package simple
 
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"github.com/wangsying/oauth2wall/common"
 )
 
 type User struct {
-	ID       int
-	Name     string
-	NickName string
-	Email    string
-	Token    string
+	AccessToken  string `json:"AccessToken"`
+	RefreshToken string `json:"RefreshToken"`
+	ExpiresIn    int    `json:"ExpiresIn"`
+	Scope        string `json:"Scope"`
+	Raw          struct {
+		ID        string    `json:"Id"`
+		ClientID  string    `json:"ClientId"`
+		Username  string    `json:"Username"`
+		EMail     string    `json:"EMail"`
+		Mobile    string    `json:"Mobile"`
+		CreatedAt time.Time `json:"CreatedAt"`
+	} `json:"UserData"`
 }
 
 func GetUser(token string) *common.Result {
