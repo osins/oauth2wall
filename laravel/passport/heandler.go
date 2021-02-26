@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/wangsying/oauth2wall/common"
+	"github.com/osins/oauth2wall/common"
 	"golang.org/x/oauth2"
 )
 

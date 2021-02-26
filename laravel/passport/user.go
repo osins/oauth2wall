@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/wangsying/oauth2wall/common"
+	"github.com/osins/oauth2wall/common"
 )
 
 type User struct {

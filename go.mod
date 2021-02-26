@@ -1,4 +1,4 @@
-module github.com/wangsying/oauth2wall
+module github.com/osins/oauth2wall
 
 go 1.15
 

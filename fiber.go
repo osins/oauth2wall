@@ -4,9 +4,9 @@ import (
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/wangsying/oauth2wall/common"
-	"github.com/wangsying/oauth2wall/laravel/passport"
-	"github.com/wangsying/oauth2wall/osin/simple"
+	"github.com/osins/oauth2wall/common"
+	"github.com/osins/oauth2wall/laravel/passport"
+	"github.com/osins/oauth2wall/osin/simple"
 )
 
 func NewOAuth2(app *fiber.App) OAuth2 {
@@ -35,7 +35,7 @@ func (f *oAuth2) Middleware() {
 			}
 		}
 
-		return ctx.JSON(common.NewResult("用户权限验证中间件验证用户信息失败").SetSuccess(false))
+		return ctx.JSON(common.NewResult("用户权限验证中间件验证用户信息失败").SetSuccess(false).SetCode(104))
 	})
 }
 

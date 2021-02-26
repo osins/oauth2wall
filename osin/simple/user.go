@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/wangsying/oauth2wall/common"
+	"github.com/osins/oauth2wall/common"
 )
 
 type User struct {
